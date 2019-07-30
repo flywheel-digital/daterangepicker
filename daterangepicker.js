@@ -1272,14 +1272,16 @@ Object.freeze(Interval);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.drp-calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+            var unitOfTime = this.mapIntervalToUnitOfTime();
 
             //highlight the dates between the start date and the date being hovered as a potential end date
             var leftCalendar = this.leftCalendar;
             var rightCalendar = this.rightCalendar;
             var startDate = this.startDate;
-            if (!this.endDate) {
+            var endDate = this.endDate;
+            var previewClass = this.interval === Interval.daily ? 'in-range' : 'selection-preview';
+            if (!endDate || this.interval !== Interval.daily) {
                 this.container.find('.drp-calendar tbody td').each(function (index, el) {
-
                     //skip week numbers, only look at dates
                     if ($(el).hasClass('week')) return;
 
@@ -1289,10 +1291,10 @@ Object.freeze(Interval);
                     var cal = $(el).parents('.drp-calendar');
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
 
-                    if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
-                        $(el).addClass('in-range');
+                    if ((!endDate && (dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, unitOfTime)) || (startDate && endDate && dt.isSame(date, unitOfTime))) {
+                        $(el).addClass(previewClass);
                     } else {
-                        $(el).removeClass('in-range');
+                        $(el).removeClass(previewClass);
                     }
 
                 });

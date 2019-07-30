@@ -196,6 +196,13 @@
   border-radius: 0;
 }
 
+.daterangepicker td.selection-preview:not(.off):not(.active) {
+  background-color: #bedbe8 !important;
+  border-color: transparent;
+  color: #000;
+  border-radius: 0;
+}
+
 .daterangepicker td.start-date {
   border-radius: 4px 0 0 4px;
 }
