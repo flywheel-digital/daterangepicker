@@ -13,6 +13,30 @@ a single date picker mode, a time picker, and predefined date ranges.
 
 ## [See It In a Live Application](https://awio.iljmp.com/5/drpdemogh)
 
+An extension of [dangrossman's daterangepicker](https://github.com/dangrossman/daterangepicker), with support for configuring following additional properties/events.
+
+## Additional Custom Properties
+
+<table width="100%">
+	<tr>
+		<th valign="top" colspan="3" align="left"><a href="#props" name="props">Properties</a></th>
+	</tr>
+	<tr>
+		<th valign="top" width="120px" align="left">Property</th>
+		<th valign="top" align="left">Description</th>
+		<th valign="top" width="60px" align="left">Type</th>
+		<th valign="top" width="60px" align="left">Default</th>
+	</tr>
+	<tr>
+		<td valign="top"><code>interval</code></td>
+		<td valign="top">
+			A string Represeting which interval selection to use for date range picker
+		</td>
+		<td valign="top"><code>DAILY|WEEKLY|MONTHLY</code></td>
+		<td valign="top"><code>DAILY</code></td>
+	</tr>
+</table>
+
 ## License
 
 The MIT License (MIT)
