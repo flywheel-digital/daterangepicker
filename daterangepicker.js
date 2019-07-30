@@ -6,6 +6,12 @@
  * @website: http://www.daterangepicker.com/
  */
 // Following the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
+var Interval = {
+    daily: 'DAILY',
+    weekly: 'WEEKLY',
+    monthly: 'MONTHLY'
+}
+Object.freeze(Interval);
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Make globaly available as well
@@ -55,6 +61,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.interval = Interval.daily;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -277,6 +284,13 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        switch (options.interval) {
+            case Interval.daily:
+            case Interval.weekly:
+            case Interval.monthly:
+                this.interval = options.interval;
+        }
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1295,6 +1309,7 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.drp-calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+            var unitOfTime = this.mapIntervalToUnitOfTime();
 
             //
             // this function needs to do a few things:
@@ -1323,11 +1338,19 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.endDate = null;
-                this.setStartDate(date.clone());
+                if (this.interval !== Interval.daily) {
+                    this.setStartDate(date.clone().startOf(unitOfTime));
+                } else {
+                    this.setStartDate(date.clone());
+                }
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
-                this.setEndDate(this.startDate.clone());
+                if (this.interval !== Interval.daily) {
+                    this.setEndDate(this.startDate.clone().endOf(unitOfTime));
+                } else {
+                    this.setEndDate(this.startDate.clone());
+                }
             } else { // picking end
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
@@ -1345,7 +1368,11 @@
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
-                this.setEndDate(date.clone());
+                if (this.interval !== Interval.daily) {
+                    this.setEndDate(date.clone().endOf(unitOfTime));
+                } else {
+                    this.setEndDate(date.clone());
+                }
                 if (this.autoApply) {
                     this.calculateChosenLabel();
                     this.clickApply();
@@ -1558,6 +1585,16 @@
             this.container.remove();
             this.element.off('.daterangepicker');
             this.element.removeData();
+        },
+        mapIntervalToUnitOfTime: function () {
+            switch (this.interval) {
+                case Interval.daily:
+                    return 'day';
+                case Interval.weekly:
+                    return 'week';
+                case Interval.monthly:
+                    return 'month';
+            }
         }
 
     };
