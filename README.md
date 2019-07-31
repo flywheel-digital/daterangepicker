@@ -30,7 +30,7 @@ An extension of [dangrossman's daterangepicker](https://github.com/dangrossman/d
 	<tr>
 		<td valign="top"><code>interval</code></td>
 		<td valign="top">
-			A string Represeting which interval selection to use for date range picker
+			A string Represeting which interval selection to use for date range picker, when weekly only full weeks are allowed for selection, similarly for monthly
 		</td>
 		<td valign="top"><code>DAILY|WEEKLY|MONTHLY</code></td>
 		<td valign="top"><code>DAILY</code></td>

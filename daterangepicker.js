@@ -432,6 +432,7 @@ Object.freeze(Interval);
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.timeChanged, this))
+            .on('mouseleave.drp-calendar', $.proxy(this.mouseLeavePicker, this));
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
@@ -1260,6 +1261,21 @@ Object.freeze(Interval);
                     this.leftCalendar.month.add(1, 'month');
             }
             this.updateCalendars();
+        },
+
+        mouseLeavePicker: function (e) {
+            //Remove highlight from dates
+            if (this.startDate && this.endDate && this.interval !== Interval.daily) {
+                var previewClass = 'selection-preview';
+                $(e.target).find('tbody td').each(function (index, el) {
+                    //skip week numbers, only look at dates
+                    if ($(el).hasClass('week')) {
+                        return;
+                    } else if ($(el).hasClass(previewClass)) {
+                        $(el).removeClass(previewClass);
+                    }
+                });
+            }
         },
 
         hoverDate: function (e) {
