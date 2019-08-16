@@ -1,6 +1,6 @@
 {
   "name": "fw-daterangepicker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Date range picker component for Bootstrap",
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
