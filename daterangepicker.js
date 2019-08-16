@@ -389,7 +389,7 @@ Object.freeze(Interval);
             });
 
             if (this.showCustomRangeLabel) {
-                list += `<li data-range-key="${this.locale.customRangeLabel}">${this.locale.customRangeLabel}</li>`;
+                list += `<li disabled="false" data-range-key="${this.locale.customRangeLabel}">${this.locale.customRangeLabel}</li>`;
             }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
