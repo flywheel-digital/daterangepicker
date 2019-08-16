@@ -332,6 +332,10 @@
   cursor: pointer;
 }
 
+.daterangepicker .ranges li[disabled="true"] {
+  opacity: 0.7;
+}
+
 .daterangepicker .ranges li:hover {
   background-color: #eee;
 }

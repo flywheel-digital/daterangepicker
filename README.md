@@ -35,6 +35,19 @@ An extension of [dangrossman's daterangepicker](https://github.com/dangrossman/d
 		<td valign="top"><code>DAILY|WEEKLY|MONTHLY</code></td>
 		<td valign="top"><code>DAILY</code></td>
 	</tr>
+	<tr>
+		<td valign="top"><code>ranges</code></td>
+		<td valign="top">
+			Can be either an object or an array of objects, when an object, its behavior will be same as default daterangepicker,
+			when an array, each object can have following properties,
+			<code>startDate</code>: start date for range
+			<code>endDate</code>: end date for range
+			<code>label</code>: label to show for range
+			<code>allowInterval</code> Optional; interval only for which this range should be enabled, enabled for all intervals if skipped and for DAILY interval all ranges will be always enabled
+		</td>
+		<td valign="top"><code>Object|Array</code></td>
+		<td valign="top"></td>
+	</tr>
 </table>
 
 ## License
