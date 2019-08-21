@@ -48,6 +48,14 @@ An extension of [dangrossman's daterangepicker](https://github.com/dangrossman/d
 		<td valign="top"><code>Object|Array</code></td>
 		<td valign="top"></td>
 	</tr>
+	<tr>
+		<td valign="top"><code>disabledRangeTooltip</code></td>
+		<td valign="top">
+			A string Represeting tooltip to be used for any disabled pre defined ranges
+		</td>
+		<td valign="top"><code>String</code></td>
+		<td valign="top"><code>Not Available</code></td>
+	</tr>
 </table>
 
 ## License

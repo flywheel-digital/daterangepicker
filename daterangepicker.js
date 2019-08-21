@@ -62,6 +62,7 @@ Object.freeze(Interval);
         this.alwaysShowCalendars = false;
         this.ranges = {};
         this.interval = Interval.daily;
+        this.disabledRangeTooltip = 'Not Available';
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -234,6 +235,9 @@ Object.freeze(Interval);
         if (typeof options.buttonClasses === 'string')
             this.buttonClasses = options.buttonClasses;
 
+        if (typeof options.disabledRangeTooltip === 'string')
+            this.disabledRangeTooltip = options.disabledRangeTooltip;
+
         if (typeof options.buttonClasses === 'object')
             this.buttonClasses = options.buttonClasses.join(' ');
 
@@ -340,6 +344,9 @@ Object.freeze(Interval);
 
             var list = '<ul>';
             options.ranges.forEach(rangeDef => {
+                const isValidRange = this.interval === Interval.daily || rangeDef.allowInterval === this.interval || !rangeDef.allowInterval;
+                let isOutOfRange = false;
+                let title = '';
                 if (typeof rangeDef.startDate === 'string') {
                     start = moment(rangeDef.startDate, this.locale.format);
                 } else {
@@ -359,7 +366,7 @@ Object.freeze(Interval);
                 }
 
                 var maxDate = this.maxDate;
-                if (this.maxSpan && maxDate && start.clone().add(this.maxSpan).isAfter(maxDate)) {
+                if (this.maxSpan && maxDate && start.clone().add(this.maxSpan).isBefore(maxDate)) {
                     maxDate = start.clone().add(this.maxSpan);
                 }
                 if (maxDate && end.isAfter(maxDate)) {
@@ -368,8 +375,9 @@ Object.freeze(Interval);
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day'))) {
-                    return;
+                if (isValidRange && ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))) {
+                    isOutOfRange = true;
+                    title = this.disabledRangeTooltip;
                 }
 
                 //Support unicode chars in the range names.
@@ -377,15 +385,16 @@ Object.freeze(Interval);
                 elem.innerHTML = rangeDef.label;
                 var rangeHtml = elem.value;
 
-                this.ranges[rangeHtml] = [start, end];
+                if (!isOutOfRange) {
+                    this.ranges[rangeHtml] = [start, end];
+                }
 
                 if (!this.timePicker) {
                     start = start.startOf('day');
                     end = end.endOf('day');
                 }
-                const isValidRange = this.interval === Interval.daily || rangeDef.allowInterval === this.interval || !rangeDef.allowInterval;
-                const title = isValidRange ? '' : `title="Select different interval for this option"`;
-                list += `<li disabled="${!isValidRange}" ${title} data-range-key="${rangeDef.label}">${rangeDef.label}</li>`;
+                title = isValidRange ? title : 'Select a different interval for this option';
+                list += `<li disabled="${!isValidRange || isOutOfRange}" title="${title}" data-range-key="${rangeDef.label}">${rangeDef.label}</li>`;
             });
 
             if (this.showCustomRangeLabel) {
