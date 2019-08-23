@@ -385,14 +385,12 @@ Object.freeze(Interval);
                 elem.innerHTML = rangeDef.label;
                 var rangeHtml = elem.value;
 
-                if (!isOutOfRange) {
-                    this.ranges[rangeHtml] = [start, end];
-                }
-
                 if (!this.timePicker) {
                     start = start.startOf('day');
                     end = end.endOf('day');
                 }
+
+                this.ranges[rangeHtml] = [start, end];
                 title = isValidRange ? title : 'Select a different interval for this option';
                 list += `<li disabled="${!isValidRange || isOutOfRange}" title="${title}" data-range-key="${rangeDef.label}">${rangeDef.label}</li>`;
             });
