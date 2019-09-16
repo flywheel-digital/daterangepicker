@@ -390,7 +390,11 @@ Object.freeze(Interval);
                     end = end.endOf('day');
                 }
 
-                this.ranges[rangeHtml] = [start, end];
+                this.ranges[rangeHtml] = {
+                    start: start,
+                    end: end,
+                    isValid: isValidRange
+                };
                 title = isValidRange ? title : 'Select a different interval for this option';
                 list += `<li disabled="${!isValidRange || isOutOfRange}" title="${title}" data-range-key="${rangeDef.label}">${rangeDef.label}</li>`;
             });
@@ -1255,9 +1259,9 @@ Object.freeze(Interval);
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
             } else {
-                var dates = this.ranges[label];
-                this.startDate = dates[0];
-                this.endDate = dates[1];
+                var dateDef = this.ranges[label];
+                this.startDate = dateDef.start;
+                this.endDate = dateDef.end;
 
                 if (!this.timePicker) {
                     this.startDate.startOf('day');
@@ -1445,21 +1449,17 @@ Object.freeze(Interval);
             var customRange = true;
             var i = 0;
             for (var range in this.ranges) {
+                const rangeDef = this.ranges[range];
+                //ignore times when comparing dates if time picker is not enabled
+                let format = 'YYYY-MM-DD';
                 if (this.timePicker) {
-                    var format = this.timePickerSeconds ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD HH:mm";
                     //ignore times when comparing dates if time picker seconds is not enabled
-                    if (this.startDate.format(format) == this.ranges[range][0].format(format) && this.endDate.format(format) == this.ranges[range][1].format(format)) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
-                        break;
-                    }
-                } else {
-                    //ignore times when comparing dates if time picker is not enabled
-                    if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
-                        break;
-                    }
+                    format = this.timePickerSeconds ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD HH:mm';
+                }
+                if (rangeDef.isValid && this.startDate.format(format) == rangeDef.start.format(format) && this.endDate.format(format) == rangeDef.end.format(format)) {
+                    customRange = false;
+                    this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
+                    break;
                 }
                 i++;
             }
