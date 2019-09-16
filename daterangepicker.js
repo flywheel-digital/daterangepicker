@@ -1255,7 +1255,7 @@ Object.freeze(Interval);
                 return;
             }
             var label = e.target.getAttribute('data-range-key');
-            this.chosenLabel = label;
+            this.clickedRange = this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
             } else {
@@ -1456,7 +1456,8 @@ Object.freeze(Interval);
                     //ignore times when comparing dates if time picker seconds is not enabled
                     format = this.timePickerSeconds ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD HH:mm';
                 }
-                if (rangeDef.isValid && this.startDate.format(format) == rangeDef.start.format(format) && this.endDate.format(format) == rangeDef.end.format(format)) {
+                if (rangeDef.isValid && [range, this.locale.customRangeLabel, undefined].includes(this.selectedRange) &&
+                    this.startDate.format(format) == rangeDef.start.format(format) && this.endDate.format(format) == rangeDef.end.format(format)) {
                     customRange = false;
                     this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
                     break;
