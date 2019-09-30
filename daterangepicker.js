@@ -1456,7 +1456,7 @@ Object.freeze(Interval);
                     //ignore times when comparing dates if time picker seconds is not enabled
                     format = this.timePickerSeconds ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD HH:mm';
                 }
-                if (rangeDef.isValid && [range, this.locale.customRangeLabel, undefined].includes(this.selectedRange) &&
+                if (rangeDef.isValid && [range, this.locale.customRangeLabel, undefined].includes(this.clickedRange) &&
                     this.startDate.format(format) == rangeDef.start.format(format) && this.endDate.format(format) == rangeDef.end.format(format)) {
                     customRange = false;
                     this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
