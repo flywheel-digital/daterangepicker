@@ -7,6 +7,7 @@
  */
 // Following the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
 var Interval = {
+    hourly: 'HOURLY',
     daily: 'DAILY',
     weekly: 'WEEKLY',
     monthly: 'MONTHLY'
@@ -36,7 +37,7 @@ Object.freeze(Interval);
     }
 }(this, function (moment, $) {
     var DateRangePicker = function (element, options, cb) {
-
+console.log('hourly')
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
@@ -290,6 +291,7 @@ Object.freeze(Interval);
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
         switch (options.interval) {
+            case Interval.hourly:
             case Interval.daily:
             case Interval.weekly:
             case Interval.monthly:
