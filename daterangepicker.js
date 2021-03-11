@@ -37,7 +37,6 @@ Object.freeze(Interval);
     }
 }(this, function (moment, $) {
     var DateRangePicker = function (element, options, cb) {
-console.log('hourly')
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
@@ -346,7 +345,7 @@ console.log('hourly')
 
             var list = '<ul>';
             options.ranges.forEach(rangeDef => {
-                const isValidRange = this.interval === Interval.daily || rangeDef.allowInterval === this.interval || !rangeDef.allowInterval;
+                let isValidRange = this.interval === Interval.daily || rangeDef.allowInterval === this.interval || !rangeDef.allowInterval;
                 let isOutOfRange = false;
                 let title = '';
                 if (typeof rangeDef.startDate === 'string') {
@@ -391,12 +390,19 @@ console.log('hourly')
                     start = start.startOf('day');
                     end = end.endOf('day');
                 }
-
+                if(this.interval === Interval.hourly){
+                    if(elem.innerHTML ==='Yesterday' || elem.innerHTML ==='Last 7 Days'){
+                        isValidRange = true;
+                    }else if(elem.innerHTML ==='Last Month' || elem.innerHTML === 'Last 6 Months' || elem.innerHTML === 'Year to date' ||  elem.innerHTML === 'Fiscal Year to date'){
+                        isValidRange = false;
+                    }
+                }
                 this.ranges[rangeHtml] = {
                     start: start,
                     end: end,
                     isValid: isValidRange
                 };
+                
                 title = isValidRange ? title : 'Select a different interval for this option';
                 list += `<li disabled="${!isValidRange || isOutOfRange}" title="${title}" data-range-key="${rangeDef.label}">${rangeDef.label}</li>`;
             });
