@@ -1,0 +1,11 @@
+
+
+change version name in package.json
+
+2) npm login from console
+type user name
+type password (if password contain capital letter then caps lock should be on for that word, with shift it won't accept. Password is hidden)
+type email
+
+3) npm publish
+
